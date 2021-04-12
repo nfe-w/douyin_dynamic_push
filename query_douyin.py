@@ -25,7 +25,7 @@ def query_dynamic(uid=None, sec_uid=None):
     if util.check_response_is_ok(response):
         result = json.loads(str(response.content, 'utf-8'))
         if result['status_code'] != 0:
-            logger.error('【查询动态状态】请求返回数据code错误：{code}'.format(code=result['code']))
+            logger.error('【查询动态状态】请求返回数据code错误：{code}'.format(code=result['status_code']))
         else:
             aweme_list = result['aweme_list']
             if len(aweme_list) == 0:
