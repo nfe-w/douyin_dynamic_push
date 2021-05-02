@@ -46,7 +46,17 @@ class Push(object):
         title = '【{nickname}】{title_msg}'.format(nickname=nickname, title_msg=title_msg)
         content = content[:100] + (content[100:] and '...')
         self._common_push(title, content, video_url, pic_url)
-        pass
+
+    def push_for_douyin_live(self, nickname=None, room_stream_url=None, room_title=None, room_cover_url=None):
+        """
+        抖音直播提醒推送
+        :param nickname: 作者名
+        :param room_stream_url: 推流地址
+        :param room_title: 直播间标题
+        :param room_cover_url: 直播间封面
+        """
+        title = '【{nickname}】开播了'.format(nickname=nickname)
+        self._common_push(title, room_title, room_stream_url, room_cover_url)
 
     def _common_push(self, title, content, jump_url=None, pic_url=None):
         """

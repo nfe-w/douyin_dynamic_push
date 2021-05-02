@@ -25,6 +25,7 @@
 - `signature_server_url`为签名服务器url，参考 https://github.com/coder-fly/douyin-signature
 - `uid_list`为需要扫描的作者uid列表，使用英文逗号分隔，必填（可以从抖音个人主页分享链接，用浏览器打开，从url中获取）
 - `sec_uid_list`为需要扫描的作者sec_uid列表，使用英文逗号分隔，需与uid_list对应，必填
+- `room_id_list`为需要扫描的直播间房间号列表，使用英文逗号分隔
 - `intervals_second`为扫描间隔秒数，不建议过于频繁，必填
 - `begin_time`为扫描开始时间，非必填，不支持跨日期
 - `end_time`为扫描停止时间，非必填，不支持跨日期
