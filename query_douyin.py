@@ -104,6 +104,9 @@ def query_live_status(room_id=None):
         if result is None:
             logger.error('【查询直播状态】请求返回数据为空，room_id：{}'.format(room_id))
         else:
+            if result.get('room', None) is None:
+                logger.error('【查询直播状态】请求返回数据中room为空，room_id：{}'.format(room_id))
+                return
             name = result['room']['owner']['nickname']
             live_status = result['room']['status']
 
