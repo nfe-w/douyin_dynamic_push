@@ -6,6 +6,7 @@
 import json
 import time
 from collections import deque
+from urllib import parse
 
 from bs4 import BeautifulSoup
 
@@ -76,6 +77,54 @@ def query_dynamic(uid=None, sec_uid=None):
                             break
                 logger.info('【查询动态状态】【{nickname}】动态有更新，准备推送：{content}'.format(nickname=nickname, content=content[:30]))
                 push.push_for_douyin_dynamic(nickname, aweme_id, content, pic_url, video_url)
+
+
+def query_live_status_v2(user_account=None):
+    if user_account is None:
+        return
+    query_url = 'https://live.douyin.com/{}?my_ts={}'.format(user_account, int(time.time()))
+    headers = get_headers_for_live()
+    response = util.requests_get(query_url, '查询直播状态', headers=headers, use_proxy=True)
+    if util.check_response_is_ok(response):
+        html_text = response.text
+        soup = BeautifulSoup(html_text, "html.parser")
+        scripts = soup.findAll('script')
+        result = None
+        for script in scripts:
+            if script.get('id') == 'RENDER_DATA':
+                script_string = script.string
+                result = parse.unquote(script_string)
+                try:
+                    result = json.loads(result)
+                except TypeError:
+                    logger.error('【查询直播状态】json解析错误，user_account：{}'.format(user_account))
+                    return None
+                break
+
+        if result is None:
+            logger.error('【查询直播状态】请求返回数据为空，user_account：{}'.format(user_account))
+        else:
+            room_info = result.get('routeInitialProps').get('roomInfo')
+            room = room_info.get('room')
+
+            if LIVING_STATUS_DICT.get(user_account, None) is None:
+                LIVING_STATUS_DICT[user_account] = 'init'
+                logger.info('【查询直播状态】【{uname}】初始化'.format(uname=user_account))
+                return
+
+            if room is not None:
+                live_status = room.get('status')
+                if LIVING_STATUS_DICT.get(user_account, None) != live_status:
+                    LIVING_STATUS_DICT[user_account] = live_status
+
+                    if live_status == 2:
+                        name = room['owner']['nickname']
+                        room_title = room['title']
+                        room_cover_url = room['cover']['url_list'][0]
+                        room_stream_url = room['stream_url']['hls_pull_url']
+
+                        logger.info('【查询直播状态】【{name}】开播了，准备推送：{room_title}'.format(name=user_account, room_title=room_title))
+                        push.push_for_douyin_live(name, room_stream_url, room_title, room_cover_url)
 
 
 def query_live_status(room_id=None):
