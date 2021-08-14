@@ -104,12 +104,17 @@ def query_live_status_v2(user_account=None):
         if result is None:
             logger.error('【查询直播状态】请求返回数据为空，user_account：{}'.format(user_account))
         else:
-            room_info = result.get('routeInitialProps').get('roomInfo')
-            room = room_info.get('room')
+            try:
+                room_info = result.get('initialState').get('roomStore').get('roomInfo')
+                room = room_info.get('room')
+            except AttributeError:
+                logger.error('【查询直播状态】dict取值错误，user_account：{}'.format(user_account))
+                return
 
-            if LIVING_STATUS_DICT.get(user_account, None) is None:
-                LIVING_STATUS_DICT[user_account] = 'init'
-                logger.info('【查询直播状态】【{uname}】初始化'.format(uname=user_account))
+            if room is None:
+                if LIVING_STATUS_DICT.get(user_account, None) is None:
+                    LIVING_STATUS_DICT[user_account] = 'init'
+                    logger.info('【查询直播状态】【{uname}】初始化'.format(uname=user_account))
                 return
 
             if room is not None:
@@ -121,10 +126,10 @@ def query_live_status_v2(user_account=None):
                         name = room['owner']['nickname']
                         room_title = room['title']
                         room_cover_url = room['cover']['url_list'][0]
-                        room_stream_url = room['stream_url']['hls_pull_url']
+                        qrcode_url = room_info['qrcode_url']
 
                         logger.info('【查询直播状态】【{name}】开播了，准备推送：{room_title}'.format(name=user_account, room_title=room_title))
-                        push.push_for_douyin_live(name, room_stream_url, room_title, room_cover_url)
+                        push.push_for_douyin_live(name, qrcode_url, room_title, room_cover_url)
 
 
 def query_live_status(room_id=None):
