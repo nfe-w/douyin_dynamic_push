@@ -53,6 +53,11 @@
 - `agent_id`应用id，如果启用该推送，则必填
 - `corp_secret`应用Secret，如果启用该推送，则必填
 
+(6)`push_dingtalk`下的参数
+
+- `enable`是否启用钉钉bot推送
+- `access_token`机器人access_token，如果启用该推送，则必填
+
 #### 2.安装第三方库
 
 `pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/`
