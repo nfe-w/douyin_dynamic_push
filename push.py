@@ -19,6 +19,8 @@ class Push(object):
     wechat_corp_id = None
     wechat_agent_id = None
     wechat_corp_secret = None
+    dingtalk_enable = None
+    dingtalk_access_token = None
 
     def __init__(self):
         self.serverChan_enable = global_config.get_raw('push_serverChan', 'enable')
@@ -29,6 +31,8 @@ class Push(object):
         self.wechat_corp_id = global_config.get_raw('push_wechat', 'corp_id')
         self.wechat_agent_id = global_config.get_raw('push_wechat', 'agent_id')
         self.wechat_corp_secret = global_config.get_raw('push_wechat', 'corp_secret')
+        self.dingtalk_enable = global_config.get_raw('push_dingtalk', 'enable')
+        self.dingtalk_access_token = global_config.get_raw('push_dingtalk', 'access_token')
 
     def push_for_douyin_dynamic(self, nickname=None, aweme_id=None, content=None, pic_url=None, video_url=None):
         """
@@ -72,6 +76,8 @@ class Push(object):
         if self.wechat_enable == 'true':
             access_token = self._get_wechat_access_token()
             self._wechat_push(access_token, title, content, jump_url, pic_url)
+        if self.dingtalk_enable == 'true':
+            self._dingtalk_push(title, content, jump_url, pic_url)
 
     def _server_chan_push(self, title, content, url=None):
         """
@@ -152,6 +158,37 @@ class Push(object):
 
         response = util.requests_post(push_url, '推送_wechat', params=params, data=json.dumps(body))
         logger.info('【推送_wechat】{msg}'.format(msg='成功' if util.check_response_is_ok(response) else '失败'))
+
+    def _dingtalk_push(self, title, content, url=None, pic_url=None):
+        """
+        推送(dingtalk)
+        :param title: 标题
+        :param content: 内容
+        :param url: 跳转url
+        :param pic_url: 图片url
+        """
+        push_url = f'https://oapi.dingtalk.com/robot/send'
+        headers = {
+            "Content-Type": "application/json"
+        }
+        params = {
+            "access_token": self.dingtalk_access_token
+        }
+        body = {
+            "msgtype": "link",
+            "link": {
+                "title": title,
+                "text": content,
+                "messageUrl": url
+            }
+        }
+
+        if pic_url is not None:
+            body["link"]["picUrl"] = pic_url
+
+        response = util.requests_post(push_url, '推送_dingtalk', headers=headers, params=params, data=json.dumps(body))
+        logger.debug(response.json())
+        logger.info('【推送_dingtalk】{msg}'.format(msg='成功' if util.check_response_is_ok(response) else '失败'))
 
 
 push = Push()
