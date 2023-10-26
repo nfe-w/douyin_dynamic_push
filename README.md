@@ -12,6 +12,16 @@
 
 定时检测指定作者的动态，如果发生变化进行推送
 
+## Docker
+
+```sh
+# 构建镜像
+docker build -t nfew/douyin_dynamic_push:latest .
+
+# 启动容器
+docker run -d -v ~/config_douyin.ini:/mnt/config_douyin.ini --name douyin_dynamic_push nfew/douyin_dynamic_push:latest
+```
+
 ## 运行环境
 
 - [Python 3](https://www.python.org/)
