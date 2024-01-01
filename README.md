@@ -33,10 +33,9 @@ docker run -d -v ~/config_douyin.ini:/mnt/config_douyin.ini --name douyin_dynami
 (1)`config`下的参数
 
 - `signature_server_url`为签名服务器url，参考 https://github.com/coder-fly/douyin-signature
-- `uid_list`为需要扫描的作者uid列表，使用英文逗号分隔，必填（可以从抖音个人主页分享链接，用浏览器打开，从url中获取）
-- `sec_uid_list`为需要扫描的作者sec_uid列表，使用英文逗号分隔，需与uid_list对应，必填
-- `room_id_list`为需要扫描的直播间房间号列表，使用英文逗号分隔
-- `user_account_list`为用于检测开播状态的用户账号列表，使用英文逗号分隔
+- `username_list`为需要扫描的作者名称列表，使用英文逗号分隔，必填（接口现在不返回作者信息了，重新获取还挺麻烦的，自己填上凑合用先）
+- `sec_uid_list`为需要扫描的作者sec_uid列表，使用英文逗号分隔，需与username_list对应，必填（网页版抖音打开用户首页，url获取，例如 https://www.douyin.com/user/MS4wLjABAAAAGeiluJjizroSmPhcNdlsS0b7M0rxi5ygfrtqdByE0FCYi__j0fS_E52uGaF7ujpn）
+- `user_account_list`为用于检测开播状态的抖音号列表，使用英文逗号分隔
 - `intervals_second`为扫描间隔秒数，不建议过于频繁，必填
 - `begin_time`为扫描开始时间，非必填，不支持跨日期
 - `end_time`为扫描停止时间，非必填，不支持跨日期

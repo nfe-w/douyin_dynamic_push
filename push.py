@@ -46,7 +46,7 @@ class Push(object):
         if nickname is None or aweme_id is None or content is None:
             logger.error('【推送】缺少参数，nickname:[{}]，aweme_id:[{}]，content:[{}]'.format(nickname, aweme_id, content[:30]))
             return
-        title_msg = '发动态了'
+        title_msg = '发抖音视频了'
         title = '【{nickname}】{title_msg}'.format(nickname=nickname, title_msg=title_msg)
         content = content[:100] + (content[100:] and '...')
         self._common_push(title, content, video_url, pic_url)
@@ -59,7 +59,7 @@ class Push(object):
         :param room_title: 直播间标题
         :param room_cover_url: 直播间封面
         """
-        title = '【{nickname}】开播了'.format(nickname=nickname)
+        title = '【{nickname}】在抖音开播了'.format(nickname=nickname)
         self._common_push(title, room_title, room_stream_url, room_cover_url)
 
     def _common_push(self, title, content, jump_url=None, pic_url=None):
