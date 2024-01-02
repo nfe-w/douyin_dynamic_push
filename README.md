@@ -5,19 +5,18 @@
 - 本仓库发布的`douyin_dynamic_push`项目中涉及的任何脚本，仅用于测试和学习研究，禁止用于商业用途
 - `nfe-w` 对任何脚本问题概不负责，包括但不限于由任何脚本错误导致的任何损失或损害
 - 以任何方式查看此项目的人或直接或间接使用`douyin_dynamic_push`项目的任何脚本的使用者都应仔细阅读此声明
-- `douyin_dynamic_push` 保留随时更改或补充此免责声明的权利。一旦使用并复制了任何相关脚本或`douyin_dynamic_push`项目，则视为已接受此免责声明
+- `nfe-w` 保留随时更改或补充此免责声明的权利。一旦使用并复制了任何相关脚本或`douyin_dynamic_push`项目，则视为已接受此免责声明
 - 本项目遵循`MIT LICENSE`协议，如果本声明与`MIT LICENSE`协议有冲突之处，以本声明为准
 
 ## 简介
 
 定时检测指定作者的动态，如果发生变化进行推送
 
-## Docker
+## Docker（推荐）
+
+[![](https://img.shields.io/badge/DockerHub-nfew/douyin__dynamic__push-367AC7?style=flat-square&logo=Docker&logoColor=white)](https://hub.docker.com/r/nfew/douyin_dynamic_push)
 
 ```sh
-# 构建镜像
-docker build -t nfew/douyin_dynamic_push:latest .
-
 # 启动容器
 docker run -d -v ~/config_douyin.ini:/mnt/config_douyin.ini --name douyin_dynamic_push nfew/douyin_dynamic_push:latest
 ```
