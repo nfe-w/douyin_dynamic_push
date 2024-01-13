@@ -1,3 +1,5 @@
+# 强烈推荐使用功能更全的【✨多合一动态检测与推送✨】：https://github.com/nfe-w/aio-dynamic-push
+
 # douyin_dynamic_push
 
 ## 声明:
